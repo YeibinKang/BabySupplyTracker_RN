@@ -48,7 +48,7 @@ export default function InventoryListScreen() {
         const today = new Date();
         const target = new Date(dateStr);
         const diffDays = Math.ceil((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        return diffDays <= 3 && diffDays >= 0; // 오늘 ~ 3일 이내면 true
+        return diffDays <= 7 && diffDays >= 0; // 오늘 ~ 3일 이내면 true
     };
 
 
@@ -71,7 +71,7 @@ export default function InventoryListScreen() {
             return true; // 'all'
         })();
 
-        // 어떤 필터가 적용됐는지 판단
+
         const isFilteringByCategory = selectedCategory !== null;
         const isFilteringByStatus = selectedStatus !== 'all';
 
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     floatingButton: {
         position: 'absolute',
         right: 20,
-        bottom: 100,
+        bottom: 5,
         backgroundColor: '#DA6C6C',
         borderRadius: 30,
         padding: 16,

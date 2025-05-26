@@ -59,6 +59,10 @@ export default function ItemEditScreen() {
         navigation.navigate("MainTabs", { screen: "InventoryList" });
     };
 
+    const handleCancelButtonPress = () => {
+        navigation.navigate("MainTabs", { screen: "InventoryList" });
+    };
+
     const handleDateChange = (event, selectedDate) => {
         setShow(false);
         if (selectedDate) {
@@ -270,7 +274,7 @@ export default function ItemEditScreen() {
                 <Button mode="outlined" style={styles.button} onPress={handleSaveButtonPress}>
                     Save
                 </Button>
-                <Button mode="contained" buttonColor="red" style={styles.button}>
+                <Button mode="contained" buttonColor="purple" style={styles.button} onPress={handleCancelButtonPress}>
                     Cancel
                 </Button>
             </View>

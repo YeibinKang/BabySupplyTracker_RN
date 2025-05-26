@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Linking } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Text, Button, Divider } from "react-native-paper";
 import { useInventory } from '@/src/context/InventoryContext';
@@ -7,7 +7,7 @@ import { useInventory } from '@/src/context/InventoryContext';
 
 export default function ItemDetailScreen() {
     const route = useRoute();
-    const { items } = useInventory();
+    const { items, deleteItem } = useInventory();
     const navigation = useNavigation();
     const itemInfo = route.params;
     const [itemData, setItemData] = useState(null); //individual item data (selected from the list)
@@ -33,6 +33,33 @@ export default function ItemDetailScreen() {
         }
 
     }
+
+    const handleDeleteButtonPress = () => {
+
+        if (itemData !== null) {
+
+            console.log("Delete button pressed");
+
+            //delete item from the useInventory context (items)
+
+            const deletedItem = items.find((item) => item.id === itemInfo.itemId);
+            if (deletedItem) {
+                deleteItem(deletedItem.id);
+                navigation.goBack(); // Navigate back to the previous screen after deletion
+            }
+
+
+        }
+
+    }
+
+    const checkIsExpiringSoon = (dateStr: string) => {
+        const today = new Date();
+        const target = new Date(dateStr);
+        const diffDays = Math.ceil((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        return diffDays <= 7 && diffDays >= 0;
+    };
+
 
     return (
 
@@ -85,11 +112,23 @@ export default function ItemDetailScreen() {
                 <Text style={styles.sectionContent}>{itemData.memo}</Text>
             </View>
 
+            {(itemData.minStock > itemData.qty || checkIsExpiringSoon(itemData.expiredDate)) && (
+                <View style={styles.buttonContainer}>
+                    <Button mode="outlined" style={styles.button} buttonColor='#213363' textColor='white' onPress={() => {
+                        itemData.hasStage ? Linking.openURL(`https://www.google.com/search?q=${encodeURIComponent(itemData.name + ' ' + itemData.stage)}`) :
+                            Linking.openURL(`https://www.google.com/search?q=${encodeURIComponent(itemData.name + ' baby')}`)
+                    }}
+                    >Buy Now</Button>
+
+                </View>
+            )}
+
+
             <Divider style={{ marginVertical: 16 }} />
 
             <View style={styles.buttonContainer}>
                 <Button mode="outlined" style={styles.button} onPress={handleEditButtonPress}>Edit</Button>
-                <Button mode="contained" buttonColor="red" style={styles.button}>Delete</Button>
+                <Button mode="contained" buttonColor="red" style={styles.button} onPress={handleDeleteButtonPress}>Delete</Button>
             </View>
 
 

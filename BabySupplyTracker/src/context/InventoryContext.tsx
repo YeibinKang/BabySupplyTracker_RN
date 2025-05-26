@@ -62,11 +62,14 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
     }
 
     //delete item
+    const deleteItem = (itemId) => {
+        setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+    }
 
     //todo: add category?
 
     return (
-        <InventoryContext.Provider value={{ items, updateItem, addItem, categoryList, unitList }}>
+        <InventoryContext.Provider value={{ items, updateItem, addItem, categoryList, unitList, deleteItem }}>
             {children}
         </InventoryContext.Provider>
     )
