@@ -48,85 +48,152 @@ export default function InventoryListScreen() {
         const today = new Date();
         const target = new Date(dateStr);
         const diffDays = Math.ceil((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        return diffDays <= 7 && diffDays >= 0; // 오늘 ~ 3일 이내면 true
+        return diffDays <= 7 && diffDays >= 0;
+    };
+
+    const getCategoryButtonStyle = () => ({
+        ...styles.filterButton,
+        backgroundColor: selectedCategory !== null ? '#007AFF' : '#e0e0e0',
+    });
+
+    const getCategoryButtonTextColor = () =>
+        selectedCategory !== null ? 'white' : 'black';
+
+    const getStatusButtonStyle = () => ({
+        ...styles.filterButton,
+        backgroundColor: selectedStatus !== 'all' ? '#FF6B35' : '#e0e0e0',
+    });
+
+    const getStatusButtonTextColor = () =>
+        selectedStatus !== 'all' ? 'white' : 'black';
+
+    const getClearButtonStyle = () => {
+        const hasActiveFilters = selectedCategory !== null || selectedStatus !== 'all';
+
+        return {
+            ...styles.filterButton,
+            backgroundColor: hasActiveFilters ? '#FFE6E6' : '#f8f8f8',
+            // opacity: hasActiveFilters ? 1 : 0.6,
+        };
+    };
+
+    const getClearButtonTextColor = () => {
+        const hasActiveFilters = selectedCategory !== null || selectedStatus !== 'all';
+        return hasActiveFilters ? '#D32F2F' : '#888888';
     };
 
 
     const filteredItems = items.filter((item) => {
+
         const categoryMatch = selectedCategory ? item.category === selectedCategory : true;
 
         const statusMatch = (() => {
             if (selectedStatus === 'lowStock') {
-                return item.qty < item.minimumQty;
+                return item.qty < item.minStock;
             }
             if (selectedStatus === 'expiring') {
                 return item.hasExpiredDate && checkIsExpiringSoon(item.expiredDate);
             }
             if (selectedStatus === 'both') {
                 return (
-                    item.qty < item.minimumQty &&
+                    item.qty < item.minStock &&
                     item.hasExpiredDate && checkIsExpiringSoon(item.expiredDate)
                 );
             }
             return true; // 'all'
         })();
 
-
-        const isFilteringByCategory = selectedCategory !== null;
-        const isFilteringByStatus = selectedStatus !== 'all';
-
-        if (isFilteringByCategory) {
-            return categoryMatch;
-        } else if (isFilteringByStatus) {
-            return statusMatch;
-        } else {
-            return true; // 아무 필터도 없으면 모두 표시
-        }
+        return categoryMatch && statusMatch;
     });
 
 
     return (
-        <View>
+        <View style={{ flex: 1, position: 'relative' }}>
 
-            {/* category */}
-            <Menu
-                visible={categoryMenuVisible}
-                onDismiss={() => setCategoryMenuVisible(false)}
-                anchor={<Button onPress={openCategoryMenu}>Filter by Category</Button>}>
-                <Menu.Item onPress={() => setSelectedCategory(null)} title="All Categories" />
-                {categoryList.map((category) => (
-                    <Menu.Item
-                        leadingIcon={category.icon}
-                        key={category.value}
-                        onPress={() => {
-                            setSelectedCategory(category.value);
-                            setCategoryMenuVisible(false);
-                        } // Close the menu after selection
-                        }
-                        title={category.label}
-                    />
-                ))}
-            </Menu>
-
-
-            {/* TODO: Add filter buy seeing categories, min stock items */}
-
-            {/* status */}
-            <View>
-                <Menu visible={statusMenuVisible}
-                    onDismiss={() => setStatusMenuVisible(false)}
-                    anchor={<Button onPress={openStatusMenu}>Filter by status</Button>}>
-                    <Menu.Item onPress={() => setSelectedStatus('lowStock')} title="Low Stock" />
-                    <Menu.Item onPress={() => setSelectedStatus('expiring')} title="Expiring Soon" />
-                    <Menu.Item onPress={() => setSelectedStatus('both')} title="Low Stock & Expiring" />
-                    <Menu.Item onPress={() => setSelectedStatus('all')} title="All Statuses" />
-                </Menu>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 5 }}>
+                <Text>
+                    Filtered by:{' 📌 '}
+                    <Text style={{ fontWeight: 'bold' }}>
+                        {selectedCategory ? categoryList.find(c => c.value === selectedCategory)?.label : 'All Categories'}
+                    </Text>{' '}
+                    |{' '}
+                    <Text style={{ fontWeight: 'bold' }}>
+                        {selectedStatus === 'all' ? 'All Statuses' :
+                            selectedStatus === 'lowStock' ? 'Low Stock' :
+                                selectedStatus === 'expiring' ? 'Expiring Soon' : 'Low Stock & Expiring'}
+                    </Text>
+                </Text>
 
             </View>
+
+            <View style={styles.buttonGroup}>
+                {/* category */}
+                {/* todo: selectedCategory != null -> background color */}
+                <Menu
+                    visible={categoryMenuVisible}
+                    onDismiss={() => setCategoryMenuVisible(false)}
+                    anchor={
+                        <Button compact={true} onPress={openCategoryMenu} style={getCategoryButtonStyle()} textColor={getCategoryButtonTextColor()}>Category Filter</Button>}>
+
+                    <Menu.Item onPress={() => setSelectedCategory(null)} title="All Categories" />
+                    {categoryList.map((category) => (
+                        <Menu.Item
+                            leadingIcon={category.icon}
+                            key={category.value}
+                            onPress={() => {
+                                setSelectedCategory(category.value);
+                                setCategoryMenuVisible(false);
+                            } // Close the menu after selection
+                            }
+                            title={category.label}
+                        />
+                    ))}
+                </Menu>
+
+                <View style={styles.filterContainer}>
+
+
+                    <Menu visible={statusMenuVisible}
+                        onDismiss={() => setStatusMenuVisible(false)}
+                        anchor={
+
+                            <Button compact={true} onPress={openStatusMenu} style={getStatusButtonStyle()} textColor={getStatusButtonTextColor()}>Status Filter</Button>}>
+                        <Menu.Item onPress={() => setSelectedStatus('lowStock')} title="Low Stock" />
+                        <Menu.Item onPress={() => setSelectedStatus('expiring')} title="Expiring Soon" />
+                        <Menu.Item onPress={() => setSelectedStatus('both')} title="Low Stock & Expiring" />
+                        <Menu.Item onPress={() => setSelectedStatus('all')} title="All Statuses" />
+                    </Menu>
+                    {selectedStatus !== 'all' && (
+                        <Text style={styles.activeFilterText}>
+                            {selectedStatus === 'lowStock' ? 'Low Stock' :
+                                selectedStatus === 'expiring' ? 'Expiring' : 'Both'}
+                        </Text>
+                    )}
+
+                </View>
+
+
+                <Button
+                    compact={true}
+                    onPress={() => {
+                        setSelectedCategory(null);
+                        setSelectedStatus('all');
+                    }}
+                    style={getClearButtonStyle()}
+                    textColor={getClearButtonTextColor()}
+                    icon="close-circle">
+                    Clear Filters
+                </Button>
+
+            </View>
+
 
             <FlatList
                 data={filteredItems}
                 keyExtractor={(item) => item.id.toString()}
+                contentContainerStyle={{ paddingBottom: 150 }}
+                showsVerticalScrollIndicator={false}
+
                 renderItem={({ item }) => {
 
                     const isLowStock = item.qty < item.minStock;
@@ -137,10 +204,6 @@ export default function InventoryListScreen() {
                         const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
                         return daysDiff <= 7; // 7 days
                     })();
-
-                    // const categoryMatch = selectedCategory ? item.category === selectedCategory : true;
-
-
 
                     let cardStyle = styles.card;
                     if (isLowStock && isExpiringSoon) {
@@ -194,17 +257,19 @@ export default function InventoryListScreen() {
 
 
                             </View>
+
                         </Card>
                     )
 
                 }}
             />
 
+
+
+
             <TouchableOpacity style={styles.floatingButton} onPress={handleAddItemPress}>
-                <Icon name="pen" size={30} color="#F2F2F2" solid />
+                <Icon name="plus" size={30} color="#F2F2F2" />
             </TouchableOpacity>
-
-
 
         </View>
     )
@@ -255,7 +320,7 @@ const styles = StyleSheet.create({
     floatingButton: {
         position: 'absolute',
         right: 20,
-        bottom: 5,
+        bottom: 50,
         backgroundColor: '#DA6C6C',
         borderRadius: 30,
         padding: 16,
@@ -264,6 +329,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.5,
+        zIndex: 1000
     },
     lowStockCard: {
         marginHorizontal: 16,
@@ -287,4 +353,31 @@ const styles = StyleSheet.create({
         padding: 12,
         backgroundColor: '#FFF6CC',
     },
+
+    buttonGroup: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 8,
+        paddingTop: 8,
+        alignItems: 'center',
+    },
+    filterButton: {
+        backgroundColor: '#e0e0e0',
+        borderRadius: 6,
+        paddingVertical: 4,
+        paddingHorizontal: 1,
+        flex: 1, // 동일한 너비로 분배
+        marginHorizontal: 4, // 더 작은 간격
+        alignSelf: 'center',
+
+    },
+    activeFilterText: {
+        fontSize: 10,
+        color: '#666',
+        marginTop: 4,
+        textAlign: 'center',
+        fontWeight: '500',
+    },
+
+
 });
