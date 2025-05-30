@@ -6,6 +6,8 @@ import { RootStackParamList } from '../../navigation/RootNavigator';
 import { useInventory } from "../../context/InventoryContext";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useState } from "react";
+import { checkIsExpiringSoon } from "../../utils/expiringFilter";
+
 
 
 
@@ -43,13 +45,6 @@ export default function InventoryListScreen() {
         const matchedIcon = categoryList.find((cat) => cat.label === categoryLabel);
         return matchedIcon ? matchedIcon.icon : "question-mark-circle"; // default icon if not found
     }
-
-    const checkIsExpiringSoon = (dateStr: string) => {
-        const today = new Date();
-        const target = new Date(dateStr);
-        const diffDays = Math.ceil((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        return diffDays <= 7 && diffDays >= 0;
-    };
 
     const getCategoryButtonStyle = () => ({
         ...styles.filterButton,
@@ -110,21 +105,7 @@ export default function InventoryListScreen() {
     return (
         <View style={{ flex: 1, position: 'relative' }}>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 5 }}>
-                <Text>
-                    Filtered by:{' 📌 '}
-                    <Text style={{ fontWeight: 'bold' }}>
-                        {selectedCategory ? categoryList.find(c => c.value === selectedCategory)?.label : 'All Categories'}
-                    </Text>{' '}
-                    |{' '}
-                    <Text style={{ fontWeight: 'bold' }}>
-                        {selectedStatus === 'all' ? 'All Statuses' :
-                            selectedStatus === 'lowStock' ? 'Low Stock' :
-                                selectedStatus === 'expiring' ? 'Expiring Soon' : 'Low Stock & Expiring'}
-                    </Text>
-                </Text>
 
-            </View>
 
             <View style={styles.buttonGroup}>
                 {/* category */}
@@ -163,12 +144,7 @@ export default function InventoryListScreen() {
                         <Menu.Item onPress={() => setSelectedStatus('both')} title="Low Stock & Expiring" />
                         <Menu.Item onPress={() => setSelectedStatus('all')} title="All Statuses" />
                     </Menu>
-                    {selectedStatus !== 'all' && (
-                        <Text style={styles.activeFilterText}>
-                            {selectedStatus === 'lowStock' ? 'Low Stock' :
-                                selectedStatus === 'expiring' ? 'Expiring' : 'Both'}
-                        </Text>
-                    )}
+
 
                 </View>
 
@@ -187,6 +163,22 @@ export default function InventoryListScreen() {
 
             </View>
 
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 5 }}>
+                <Text>
+                    {' 📌 '}
+                    <Text style={{ fontWeight: 'bold', fontSize: '15' }}>
+                        {selectedCategory ? categoryList.find(c => c.value === selectedCategory)?.label : 'All Categories'}
+                    </Text>{' '}
+                    &{' '}
+                    <Text style={{ fontWeight: 'bold', fontSize: '15' }}>
+                        {selectedStatus === 'all' ? 'All Statuses' :
+                            selectedStatus === 'lowStock' ? 'Low Stock' :
+                                selectedStatus === 'expiring' ? 'Expiring Soon' : 'Low Stock & Expiring'}
+                    </Text>
+                </Text>
+
+            </View>
+
 
             <FlatList
                 data={filteredItems}
@@ -197,13 +189,8 @@ export default function InventoryListScreen() {
                 renderItem={({ item }) => {
 
                     const isLowStock = item.qty < item.minStock;
-                    const isExpiringSoon = item.hasExpiredDate && (() => {
-                        const currentDate = new Date();
-                        const expiredDate = new Date(item.expiredDate);
-                        const timeDiff = expiredDate.getTime() - currentDate.getTime();
-                        const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                        return daysDiff <= 7; // 7 days
-                    })();
+                    const isExpiringSoon = checkIsExpiringSoon(item.expiredDate);
+
 
                     let cardStyle = styles.card;
                     if (isLowStock && isExpiringSoon) {
@@ -364,12 +351,15 @@ const styles = StyleSheet.create({
     filterButton: {
         backgroundColor: '#e0e0e0',
         borderRadius: 6,
-        paddingVertical: 4,
-        paddingHorizontal: 1,
-        flex: 1, // 동일한 너비로 분배
-        marginHorizontal: 4, // 더 작은 간격
-        alignSelf: 'center',
-
+        paddingVertical: 6,
+        paddingHorizontal: 2,
+        marginHorizontal: 1,
+        alignItems: 'center',
+    },
+    filterContainer: {
+        flexDirection: 'row',
+        paddingHorizontal: 16,
+        paddingVertical: 8,
     },
     activeFilterText: {
         fontSize: 10,

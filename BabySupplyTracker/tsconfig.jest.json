@@ -1,0 +1,14 @@
+// tsconfig.jest.json
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "jsx": "react-native",
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}

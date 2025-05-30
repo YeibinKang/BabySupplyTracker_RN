@@ -1,11 +1,15 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "jsx": "react-native",
     "strict": true,
+    "baseUrl": ".",
+     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["src/*"]
     }
   },
   "include": [
@@ -13,5 +17,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "tests/utils/expiringFilter.test.js", "src/utils/expiringFilter.js"  ],
 }
