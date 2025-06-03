@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Linking } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Text, Button, Divider } from "react-native-paper";
-import { useInventory } from '@/src/context/InventoryContext';
+import { useInventory } from '../../context/InventoryContext';
 
 
 export default function ItemDetailScreen() {

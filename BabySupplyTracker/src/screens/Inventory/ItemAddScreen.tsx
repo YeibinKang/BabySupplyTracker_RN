@@ -3,7 +3,7 @@ import { Text, Button, TextInput, Switch } from "react-native-paper";
 import { useState, useEffect } from 'react';
 import { useRoute, useNavigation } from "@react-navigation/native";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useInventory } from '@/src/context/InventoryContext';
+import { useInventory } from '../../context/InventoryContext';
 import { Picker } from '@react-native-picker/picker';
 
 

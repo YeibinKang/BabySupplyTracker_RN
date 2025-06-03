@@ -7,6 +7,8 @@ import { useInventory } from "../../context/InventoryContext";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useState } from "react";
 import { checkIsExpiringSoon } from "../../utils/expiringFilter";
+import { shouldIncludeItem } from "../../utils/ShouldIncludeItem";
+import { getCardStyleByStatus, getWarningIcon, getIconColor } from "../../utils/itemStyleHelper";
 
 
 
@@ -19,7 +21,6 @@ export default function InventoryListScreen() {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const route = useRoute();
 
-    //const [activeFilter, setActiveFilter] = useState<'all' | 'lowStock' | 'expiring' | 'both'>('all');
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedStatus, setSelectedStatus] = useState<'all' | 'lowStock' | 'expiring' | 'both'>('all');
 
@@ -41,6 +42,7 @@ export default function InventoryListScreen() {
         navigation.navigate("ItemAdd");
     };
 
+    // 
     const getCategoryIcon = (categoryLabel: string) => {
         const matchedIcon = categoryList.find((cat) => cat.label === categoryLabel);
         return matchedIcon ? matchedIcon.icon : "question-mark-circle"; // default icon if not found
@@ -68,7 +70,6 @@ export default function InventoryListScreen() {
         return {
             ...styles.filterButton,
             backgroundColor: hasActiveFilters ? '#FFE6E6' : '#f8f8f8',
-            // opacity: hasActiveFilters ? 1 : 0.6,
         };
     };
 
@@ -78,38 +79,19 @@ export default function InventoryListScreen() {
     };
 
 
-    const filteredItems = items.filter((item) => {
+    const filteredItems = items.filter((item) =>
+        shouldIncludeItem(item, selectedCategory, selectedStatus)
+    );
 
-        const categoryMatch = selectedCategory ? item.category === selectedCategory : true;
 
-        const statusMatch = (() => {
-            if (selectedStatus === 'lowStock') {
-                return item.qty < item.minStock;
-            }
-            if (selectedStatus === 'expiring') {
-                return item.hasExpiredDate && checkIsExpiringSoon(item.expiredDate);
-            }
-            if (selectedStatus === 'both') {
-                return (
-                    item.qty < item.minStock &&
-                    item.hasExpiredDate && checkIsExpiringSoon(item.expiredDate)
-                );
-            }
-            return true; // 'all'
-        })();
-
-        return categoryMatch && statusMatch;
-    });
 
 
     return (
         <View style={{ flex: 1, position: 'relative' }}>
 
 
-
             <View style={styles.buttonGroup}>
                 {/* category */}
-                {/* todo: selectedCategory != null -> background color */}
                 <Menu
                     visible={categoryMenuVisible}
                     onDismiss={() => setCategoryMenuVisible(false)}
@@ -190,6 +172,10 @@ export default function InventoryListScreen() {
 
                     const isLowStock = item.qty < item.minStock;
                     const isExpiringSoon = checkIsExpiringSoon(item.expiredDate);
+
+
+                    //todo
+                    getCardStyleByStatus(isLowStock, isExpiringSoon);
 
 
                     let cardStyle = styles.card;

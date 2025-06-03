@@ -66,7 +66,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
         setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
     }
 
-    //todo: add category?
+
 
     return (
         <InventoryContext.Provider value={{ items, updateItem, addItem, categoryList, unitList, deleteItem }}>

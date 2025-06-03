@@ -4,7 +4,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { Text, Button, TextInput, Switch } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { useInventory } from '@/src/context/InventoryContext';
+import { useInventory } from '../../context/InventoryContext';
 
 export default function ItemEditScreen() {
     const route = useRoute();
