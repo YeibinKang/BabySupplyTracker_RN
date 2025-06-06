@@ -23,5 +23,10 @@ const snapshot = await getDocs(collection(db, 'units'));
 
 export const getUnits = async () => {
     const snapshot = await getDocs(collection(db, 'units'));
-    return snapshot.docs.map(doc => doc.data().name);
+    return snapshot.docs.map(doc =>({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    
+    //return snapshot.docs.map(doc => doc.data().name);
 };

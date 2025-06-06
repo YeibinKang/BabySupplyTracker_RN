@@ -34,6 +34,7 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
                 await Promise.all([
                     seedCategoriesIfEmpty(),
+                    seedUnitsIfEmpty(),
                 ]);
 
                 const [fetchedItems, fetchedCategories, fetchedUnits] = await Promise.all([
@@ -69,7 +70,8 @@ export const InventoryProvider = ({ children }: { children: ReactNode }) => {
 
     //update Item
     const updateItem = async (updatedItem) => {
-        await updateItemInDB(updateItem.id, updatedItem);
+        console.log('updated id: ' + updatedItem.id);
+        await updateItemInDB(updatedItem.id, updatedItem);
         const updated = await getItems();
         setItems(updated);
     }

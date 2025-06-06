@@ -10,6 +10,7 @@ export default function ItemDetailScreen() {
     const { items, deleteItem } = useInventory();
     const navigation = useNavigation();
     const itemInfo = route.params;
+    console.log("item info: " + itemInfo.itemId);
     const [itemData, setItemData] = useState(null); //individual item data (selected from the list)
 
 
@@ -18,7 +19,9 @@ export default function ItemDetailScreen() {
         if (items && items.length > 0) {
             const item = items.find((item) => item.id === itemInfo.itemId);
             setItemData(item);
+
         }
+
 
     }, [items, itemInfo]);
 
@@ -27,9 +30,12 @@ export default function ItemDetailScreen() {
     }
 
     const handleEditButtonPress = () => {
-        if (itemData !== null) {
+
+        if (itemData && itemData.id) {
             console.log("Edit button pressed");
-            navigation.navigate("ItemEdit", { itemId: itemInfo.itemId });
+            navigation.navigate("ItemEdit", { itemId: itemData.id });
+        } else {
+            console.log("itemData is empty");
         }
 
     }
@@ -43,6 +49,7 @@ export default function ItemDetailScreen() {
             //delete item from the useInventory context (items)
 
             const deletedItem = items.find((item) => item.id === itemInfo.itemId);
+            console.log("the item will be deleted: ", deletedItem.name);
             if (deletedItem) {
                 deleteItem(deletedItem.id);
                 navigation.goBack(); // Navigate back to the previous screen after deletion
