@@ -16,7 +16,6 @@ export default function ItemEditScreen() {
 
 
     const [itemData, setItemData] = useState({
-        id: 0,
         name: "",
         qty: 0,
         unit: "",
@@ -30,6 +29,7 @@ export default function ItemEditScreen() {
         memo: "",
         hasExpiredDate: false,
         hasStage: false,
+        id: "",
     });
 
     const [date, setDate] = useState(new Date());
@@ -38,7 +38,7 @@ export default function ItemEditScreen() {
     useEffect(() => {
         if (items && items.length > 0) {
             const item = items.find((item) => item.id === itemInfo.itemId);
-            setItemData({ ...item });
+            setItemData({ ...item, id: item.id });
 
             // expiredDate가 유효하면 date 초기화
             if (item.expiredDate && item.expiredDate !== "N/A") {
@@ -51,10 +51,12 @@ export default function ItemEditScreen() {
         setItemData((prev) => ({
             ...prev,
             [field]: value,
+            id: prev.id,
         }));
     };
 
     const handleSaveButtonPress = () => {
+        console.log('updated id: ', itemData.id);
         updateItem(itemData);
         navigation.navigate("MainTabs", { screen: "InventoryList" });
     };
@@ -205,7 +207,7 @@ export default function ItemEditScreen() {
                     >
                         <Picker.Item label="Select Unit" value="" />
                         {unitList.map((unit) => (
-                            <Picker.Item label={unit} value={unit} key={unit} />
+                            <Picker.Item label={unit.name} value={unit.name} key={unit.id} />
                         ))}
                     </Picker>
                 </View>

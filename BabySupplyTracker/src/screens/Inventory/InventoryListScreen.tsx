@@ -1,6 +1,6 @@
 
-import { View, ScrollView, StyleSheet, FlatList, TouchableOpacity } from "react-native"
-import { Card, Text, Menu, Button, PaperProvider } from "react-native-paper";
+import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native"
+import { Card, Text, Menu, Button } from "react-native-paper";
 import { useNavigation, NavigationProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { useInventory } from "../../context/InventoryContext";
@@ -15,9 +15,12 @@ import { getCardStyleByStatus, getWarningIcon, getIconColor } from "../../utils/
 
 export default function InventoryListScreen() {
 
-    //const [items, setItems] = useState(inventoryItems);
-    const { items } = useInventory();
-    const { categoryList } = useInventory();
+    //const { items } = useInventory();
+    //const { categoryList } = useInventory();
+
+
+    const { items, addItem, updateItem, deleteItem, categoryList } = useInventory();
+
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const route = useRoute();
 
