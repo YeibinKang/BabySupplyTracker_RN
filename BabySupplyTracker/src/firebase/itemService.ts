@@ -4,10 +4,13 @@ import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase
 //addItem
 export const addItem = async (item) => {
     const itemRef = collection(db, 'items');
-    await addDoc(itemRef, {
+    const docRef = await addDoc(itemRef, {
         ...item,
-        createAt: new Date(),
+        createdAt: new Date(),
     });
+
+    await updateDoc(docRef, {id:docRef.id});
+    
 };
 
 

@@ -11,12 +11,11 @@ export default function ItemAddScreen() {
 
     const navigation = useNavigation();
     const { items, addItem } = useInventory();
-    const { categoryList } = useInventory();
-    const { unitList } = useInventory();
+    const { categoryList = [] } = useInventory();
+    const { unitList = [] } = useInventory();
 
 
     const [itemData, setItemData] = useState({
-        id: 0,
         name: "",
         qty: 0,
         unit: "",
@@ -199,15 +198,18 @@ export default function ItemAddScreen() {
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Unit</Text>
                         <View style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, marginTop: 4 }}>
-                            <Picker style={styles.picker}
-                                selectedValue={itemData.unit}
-                                onValueChange={(value) => handleTextInputChange('unit', value)}
-                            >
-                                <Picker.Item label="Select Unit" value="" />
-                                {unitList.map((unit) => (
-                                    <Picker.Item label={unit} value={unit} key={unit} />
-                                ))}
-                            </Picker>
+                            {Array.isArray(unitList) && (
+                                <Picker style={styles.picker}
+                                    selectedValue={itemData.unit}
+                                    onValueChange={(value) => handleTextInputChange('unit', value)}
+                                >
+                                    <Picker.Item label="Select Unit" value="" />
+                                    {unitList.map((unitObj) => (
+                                        <Picker.Item label={unitObj.name} value={unitObj.name} key={unitObj.id} />
+                                    ))}
+                                </Picker>
+                            )}
+
                         </View>
                     </View>
 
