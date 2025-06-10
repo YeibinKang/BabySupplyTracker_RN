@@ -1,104 +1,122 @@
-import React, { Children, createContext, ReactNode, useContext, useState, useEffect } from "react";
-import { getCategories, seedCategoriesIfEmpty } from "../firebase/categoryService";
-import { getUnits, seedUnitsIfEmpty } from "../firebase/unitService";
-import { getItems, addItem as addItemToDB, updateItem as updateItemInDB, deleteItem as deleteItemFromDB } from "../firebase/itemService";
+import React, { createContext, useContext } from 'react';
 
-//Sharing lists and functions in any components in the app
-const InventoryContext = createContext({
-    items: [],
-    categoryList: [],
-    unitList: [],
-    addItem: (item) => { },
-    updateItem: (item) => { },
-    deleteItem: (id) => { },
-});
-
-
+const InventoryContext = createContext(null);
 export const useInventory = () => useContext(InventoryContext);
 
-export const InventoryProvider = ({ children }: { children: ReactNode }) => {
-    const [items, setItems] = useState([]);
-    const [categoryList, setCategoryList] = useState([]);
-    const [unitList, setUnitList] = useState([]);
+export default InventoryContext;
 
 
-    //3개의 비동기 함수를 한꺼번에 실행하고 기다린 다음, 결과를 한꺼번에 받아옴 (firebase에서 데이터 가져오기)
-    useEffect(() => {
-        const fetchInitialData = async () => {
-            try {
-
-                console.log("FetchInitialData START!!!!");
 
 
-                //initial datas (categories, units)
-
-                await Promise.all([
-                    seedCategoriesIfEmpty(),
-                    seedUnitsIfEmpty(),
-                ]);
-
-                const [fetchedItems, fetchedCategories, fetchedUnits] = await Promise.all([
-                    getItems(),
-                    getCategories(),
-                    getUnits()
-                ]);
-
-                console.log("Loading SUCCESS");
-
-                setItems(fetchedItems);
-
-                setCategoryList(fetchedCategories);
-
-                setUnitList(fetchedUnits);
-            } catch (err) {
-                console.error("Error while initial Data loading: ", err);
-            }
 
 
-        };
-        fetchInitialData();
+// import React, { createContext, ReactNode, useContext, useState, useEffect } from "react";
+// import { getCategories, seedCategoriesIfEmpty } from "../firebase/categoryService";
+// import { getUnits, seedUnitsIfEmpty } from "../firebase/unitService";
+// import { getItems, addItem as addItemToDB, updateItem as updateItemInDB, deleteItem as deleteItemFromDB } from "../firebase/itemService";
 
-    }, []);
-
-
-    //add Item
-    const addItem = async (newItem) => {
-        await addItemToDB(newItem);
-        const updated = await getItems();
-        setItems(updated);
-    }
-
-    //update Item
-    const updateItem = async (updatedItem) => {
-        console.log('updated id: ' + updatedItem.id);
-        await updateItemInDB(updatedItem.id, updatedItem);
-        const updated = await getItems();
-        setItems(updated);
-    }
-
-    //delete Item
-    const deleteItem = async (id) => {
-        await deleteItemFromDB(id);
-        const updated = await getItems();
-        setItems(updated);
-    }
-
-    return (
-        <InventoryContext.Provider
-            value={{
-                items,
-                categoryList,
-                unitList,
-                addItem,
-                updateItem,
-                deleteItem
-            }}>
-            {children}
-        </InventoryContext.Provider>
-    );
+// //Sharing lists and functions in any components in the app
+// const InventoryContext = createContext({
+//     items: [],
+//     categoryList: [],
+//     unitList: [],
+//     addItem: (item) => { },
+//     updateItem: (item) => { },
+//     deleteItem: (id) => { },
+// });
 
 
-};
+// export const useInventory = () => useContext(InventoryContext);
+
+// export const InventoryProvider = ({ children }: { children: ReactNode }) => {
+//     const [items, setItems] = useState([]);
+//     const [categoryList, setCategoryList] = useState([]);
+//     const [unitList, setUnitList] = useState([]);
+
+
+//     //3개의 비동기 함수를 한꺼번에 실행하고 기다린 다음, 결과를 한꺼번에 받아옴 (firebase에서 데이터 가져오기)
+//     useEffect(() => {
+//         const fetchInitialData = async () => {
+//             try {
+
+//                 console.log("FetchInitialData START!!!!");
+
+
+//                 //initial datas (categories, units)
+
+//                 await Promise.all([
+//                     seedCategoriesIfEmpty(),
+//                     seedUnitsIfEmpty(),
+//                 ]);
+
+//                 const [fetchedItems, fetchedCategories, fetchedUnits] = await Promise.all([
+//                     getItems(),
+//                     getCategories(),
+//                     getUnits()
+//                 ]);
+
+//                 console.log("Loading SUCCESS");
+
+//                 setItems(fetchedItems);
+
+//                 setCategoryList(fetchedCategories);
+
+//                 setUnitList(fetchedUnits);
+//             } catch (err) {
+//                 console.error("Error while initial Data loading: ", err);
+//             }
+
+
+//         };
+//         fetchInitialData();
+
+//     }, []);
+
+
+//     //add Item
+//     const addItem = async (newItem) => {
+//         await addItemToDB(newItem);
+//         const updated = await getItems();
+//         setItems(updated);
+//     }
+
+//     //update Item
+//     const updateItem = async (updatedItem) => {
+//         console.log('updated id: ' + updatedItem.id);
+//         await updateItemInDB(updatedItem.id, updatedItem);
+//         const updated = await getItems();
+//         setItems(updated);
+//     }
+
+//     //delete Item
+//     const deleteItem = async (id) => {
+//         await deleteItemFromDB(id);
+//         const updated = await getItems();
+//         setItems(updated);
+//     }
+
+//     return (
+//         <InventoryContext.Provider
+//             value={{
+//                 items,
+//                 categoryList,
+//                 unitList,
+//                 addItem,
+//                 updateItem,
+//                 deleteItem
+//             }}>
+//             {children}
+//         </InventoryContext.Provider>
+//     );
+
+
+// };
+
+
+
+
+
+
 
 
 

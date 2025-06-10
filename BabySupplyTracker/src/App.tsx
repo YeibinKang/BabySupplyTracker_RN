@@ -6,10 +6,17 @@ import { Text, View, Button } from "react-native";
 import RootNavigator from "./navigation/RootNavigator";
 import { InventoryProvider } from "./context/InventoryContext";
 import { PaperProvider } from "react-native-paper";
+import { InventoryProviderFirebase } from "./context/InventoryProvider.firebase";
+
 
 
 export default function App() {
+    // const { user } = 
+
     return (
+
+
+
         <PaperProvider>
 
 

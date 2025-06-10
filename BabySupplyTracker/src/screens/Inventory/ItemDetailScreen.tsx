@@ -10,7 +10,6 @@ export default function ItemDetailScreen() {
     const { items, deleteItem } = useInventory();
     const navigation = useNavigation();
     const itemInfo = route.params;
-    console.log("item info: " + itemInfo.itemId);
     const [itemData, setItemData] = useState(null); //individual item data (selected from the list)
 
 
