@@ -45,7 +45,7 @@ You can find more detailed information in the link below.
 ## 🚀 Getting Started
 1. Clone repository
 ```bash
-git clone git@github.com:YeibinKang/babySupplyTracker.git
+git clone git@github.com:YeibinKang/BabySupplyTracker_RN.git
 ```
 2. Install dependencies:
 ``` bash
