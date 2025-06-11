@@ -4,10 +4,10 @@ import { Text, View, Button } from "react-native";
 
 
 import RootNavigator from "./navigation/RootNavigator";
-import { InventoryProvider } from "./context/InventoryContext";
+//import { InventoryProvider } from "./context/InventoryContext";
 import { PaperProvider } from "react-native-paper";
-import { InventoryProviderFirebase } from "./context/InventoryProvider.firebase";
-
+import { AuthProvider } from "./context/AuthContext";
+import { InventoryProviderSelector } from "./context/InventoryProviderSelector";
 
 
 export default function App() {
@@ -20,11 +20,17 @@ export default function App() {
         <PaperProvider>
 
 
-            <InventoryProvider>
-                <NavigationContainer>
-                    <RootNavigator />
-                </NavigationContainer>
-            </InventoryProvider>
+            {/* <InventoryProvider> */}
+            <AuthProvider>
+                <InventoryProviderSelector>
+                    <NavigationContainer>
+                        <RootNavigator />
+                    </NavigationContainer>
+                </InventoryProviderSelector>
+
+            </AuthProvider>
+
+            {/* </InventoryProvider> */}
         </PaperProvider>
     );
 }
