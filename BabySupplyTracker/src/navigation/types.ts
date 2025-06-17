@@ -3,7 +3,7 @@ export type RootStackParamList = {
     MainTabs: undefined;
     ItemDetail: {
       item: {
-        id: number;
+        id: string;
         name: string;
         stage: string | null;
         qty: number;
@@ -21,11 +21,23 @@ export type RootStackParamList = {
       };
       updateItem: (updatedItem: any) => void;
       addItem: (newItem: any) => void;
+      deleteItem: (id: string) => void;
     };
   };
+
+  export type Category = {
+        label: string;
+        value: string;
+        icon: string;
+  }
+
+  export type Unit = {
+    id: string;
+    label: string;
+  }
   
   export interface InventoryItem {
-    id: number;
+    id: string;
     name: string;
     stage: string | null;
     qty: number;

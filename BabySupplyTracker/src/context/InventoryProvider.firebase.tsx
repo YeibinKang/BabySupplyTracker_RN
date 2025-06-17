@@ -14,7 +14,7 @@ export const InventoryProviderFirebase = ({ children, uid }) => {
             try {
 
                 console.log("FetchInitialData START!!!!");
-
+                console.log("User ID: ", uid);
 
                 //initial datas (categories, units)
 
@@ -24,7 +24,7 @@ export const InventoryProviderFirebase = ({ children, uid }) => {
                 ]);
 
                 const [fetchedItems, fetchedCategories, fetchedUnits] = await Promise.all([
-                    getItems(),
+                    getItems(uid),
                     getCategories(),
                     getUnits()
                 ]);
@@ -44,7 +44,7 @@ export const InventoryProviderFirebase = ({ children, uid }) => {
         };
         fetchInitialData();
 
-    }, []);
+    }, [uid]);
 
 
     //add Item
@@ -77,7 +77,8 @@ export const InventoryProviderFirebase = ({ children, uid }) => {
                 unitList,
                 addItem,
                 updateItem,
-                deleteItem
+                deleteItem,
+                uid,
             }}>
             {children}
         </InventoryContext.Provider>

@@ -30,6 +30,8 @@ export default function ItemDetailScreen() {
 
     const handleEditButtonPress = () => {
 
+        console.log("item id: ", itemData.id);
+
         if (itemData && itemData.id) {
             console.log("Edit button pressed");
             navigation.navigate("ItemEdit", { itemId: itemData.id });

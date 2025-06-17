@@ -7,7 +7,7 @@ import RootNavigator from "./navigation/RootNavigator";
 //import { InventoryProvider } from "./context/InventoryContext";
 import { PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./context/AuthContext";
-import { InventoryProviderSelector } from "./context/InventoryProviderSelector";
+import InventoryProviderSelector from "./context/InventoryProviderSelector";
 
 
 export default function App() {

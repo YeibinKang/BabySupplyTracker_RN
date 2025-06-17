@@ -5,10 +5,11 @@ import { useNavigation, NavigationProp, useRoute } from '@react-navigation/nativ
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { useInventory } from "../../context/InventoryContext";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useState } from "react";
+import { useId, useState } from "react";
 import { checkIsExpiringSoon } from "../../utils/expiringFilter";
 import { shouldIncludeItem } from "../../utils/ShouldIncludeItem";
 import { getCardStyleByStatus, getWarningIcon, getIconColor } from "../../utils/itemStyleHelper";
+import { useAuth } from "../../context/AuthContext";
 
 
 
@@ -19,7 +20,8 @@ export default function InventoryListScreen() {
     //const { categoryList } = useInventory();
 
 
-    const { items, addItem, updateItem, deleteItem, categoryList } = useInventory();
+    const { items, addItem, updateItem, deleteItem, categoryList, uid } = useInventory();
+
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const route = useRoute();
@@ -92,7 +94,6 @@ export default function InventoryListScreen() {
     return (
         <View style={{ flex: 1, position: 'relative' }}>
 
-
             <View style={styles.buttonGroup}>
                 {/* category */}
                 <Menu
@@ -102,7 +103,7 @@ export default function InventoryListScreen() {
                         <Button compact={true} onPress={openCategoryMenu} style={getCategoryButtonStyle()} textColor={getCategoryButtonTextColor()}>Category Filter</Button>}>
 
                     <Menu.Item onPress={() => setSelectedCategory(null)} title="All Categories" />
-                    {categoryList.map((category) => (
+                    {categoryList?.map((category) => (
                         <Menu.Item
                             leadingIcon={category.icon}
                             key={category.value}
@@ -167,7 +168,7 @@ export default function InventoryListScreen() {
 
             <FlatList
                 data={filteredItems}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.id}
                 contentContainerStyle={{ paddingBottom: 150 }}
                 showsVerticalScrollIndicator={false}
 

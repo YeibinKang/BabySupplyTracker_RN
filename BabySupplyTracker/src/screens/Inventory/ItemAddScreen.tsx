@@ -5,15 +5,20 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useInventory } from '../../context/InventoryContext';
 import { Picker } from '@react-native-picker/picker';
+import { useAuth } from '../../context/AuthContext';
+import { serverTimestamp } from 'firebase/firestore';
+
+
 
 
 export default function ItemAddScreen() {
 
     const navigation = useNavigation();
-    const { items, addItem } = useInventory();
+    const { items, addItem, uid } = useInventory();
     const { categoryList = [] } = useInventory();
     const { unitList = [] } = useInventory();
 
+    const isGuestMode = uid === null;
 
     const [itemData, setItemData] = useState({
         name: "",
@@ -29,6 +34,7 @@ export default function ItemAddScreen() {
         memo: "",
         hasExpiredDate: false,
         hasStage: false,
+
     });
 
     const [date, setDate] = useState(new Date());
@@ -53,8 +59,31 @@ export default function ItemAddScreen() {
     };
 
     const handleSaveButtonPress = () => {
-        addItem(itemData);
+
+        let item = { ...itemData };
+
+        if (isGuestMode) {
+            //Guest mode: local
+            console.log("item name: ", item.name);
+            item = {
+                ...item,
+                id: Date.now().toString(), // Generate a unique ID based on timestamp
+                createdAt: new Date().toISOString(),
+            }
+
+
+        } else {
+            //firebase
+            item = {
+                ...item,
+                createdAt: serverTimestamp(),
+            }
+        }
+
+        addItem(item);
         navigation.navigate("MainTabs", { screen: "InventoryList" });
+        return;
+
     };
 
 
@@ -205,7 +234,7 @@ export default function ItemAddScreen() {
                                 >
                                     <Picker.Item label="Select Unit" value="" />
                                     {unitList.map((unitObj) => (
-                                        <Picker.Item label={unitObj.name} value={unitObj.name} key={unitObj.id} />
+                                        <Picker.Item label={unitObj.label} value={unitObj.label} key={unitObj.id} />
                                     ))}
                                 </Picker>
                             )}

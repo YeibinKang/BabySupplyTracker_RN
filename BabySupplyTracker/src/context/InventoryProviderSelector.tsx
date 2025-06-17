@@ -6,10 +6,11 @@ import { InventoryProviderLocal } from "./InventoryProvider.local";
 export default function InventoryProviderSelector({ children }) {
     const { user } = useAuth();
 
+
     if (user) {
         //firebase
-        return <InventoryProviderFirebase uid={user.uid}>{children}</InventoryProviderFirebase>
+        return <InventoryProviderFirebase uid={user?.uid}>{children}</InventoryProviderFirebase>
     } else {
-        return <InventoryProviderLocal></InventoryProviderLocal>
+        return <InventoryProviderLocal>{children}</InventoryProviderLocal>
     }
 }
