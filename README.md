@@ -40,6 +40,7 @@ You can find more detailed information in the link below.
 | Other    | Expo, Firebase Auth (optional) |
 
 ## Screenshots
+ <img src="https://github.com/user-attachments/assets/2f5ef4a4-8fde-4bf0-890c-7de8581fb580" style="width: 25%; height: auto;">
 
 
 ## 🚀 Getting Started
