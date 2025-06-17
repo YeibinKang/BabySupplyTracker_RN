@@ -1,8 +1,32 @@
 import React, { createContext, useContext } from 'react';
+import { InventoryItem } from '../navigation/types';
+import { Category } from "../navigation/types";
 
-const InventoryContext = createContext(null);
-export const useInventory = () => useContext(InventoryContext);
+const InventoryContext = createContext<InventoryContextType>({
+    items: [],
+    addItem: () => { },
+    updateItem: () => { },
+    deleteItem: () => { },
+    categoryList: [],
+    unitList: [],
+    uid: null,
+});
+type InventoryContextType = {
+    items: InventoryItem[];
+    addItem: (item: InventoryItem) => void;
+    updateItem: (item: InventoryItem) => void;
+    deleteItem: (id: string) => void;
+    categoryList: Category[];
+    unitList: string[];
+    uid: string | null;
+};
 
+
+export const useInventory = () => {
+    const context = useContext(InventoryContext);
+    if (!context) throw new Error('useInventory must be used within InventoryProvider');
+    return context;
+};
 export default InventoryContext;
 
 

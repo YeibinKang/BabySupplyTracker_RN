@@ -2,7 +2,7 @@ import { db, auth } from './firebaseConfig';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from 'firebase/firestore';
 
 
-const userId = auth.currentUser?.uid;
+const uid = auth.currentUser?.uid;
 
 //addItem
 export const addItem = async (item) => {
@@ -10,7 +10,7 @@ export const addItem = async (item) => {
     const docRef = await addDoc(itemRef, {
         ...item,
         createdAt: new Date(),
-        userId: auth.currentUser?.uid,
+        uid: auth.currentUser?.uid,
     });
 
     await updateDoc(docRef, {id:docRef.id});
@@ -19,8 +19,8 @@ export const addItem = async (item) => {
 
 
 //getItems
-export const getItems = async () => {
-    const q = query(collection(db, 'items'), where('userId', '==', userId));
+export const getItems = async (uid:string) => {
+    const q = query(collection(db, 'items'), where('uid', '==', uid));
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
         id: doc.id,
@@ -35,7 +35,7 @@ export const updateItem = async (itemId, updatedData) => {
     const itemDocRef = doc(db, 'items', itemId);
     const itemSnap = await getDocs(itemDocRef);
 
-    if(itemSnap.exist() && itemSnap.data().userId === userId){
+    if(itemSnap.exist() && itemSnap.data().uid === uid){
         await updateDoc(itemDocRef, updateDoc);
     }else{
         throw new Error("No authroization or No item exist");

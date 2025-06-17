@@ -19,11 +19,21 @@ export default function LoginScreen() {
         }
     }
 
+    const handleLogin = async () => {
+        try {
+            await login(email, password);
+            // Handle successful login, e.g., navigate to home screen
+        } catch (err) {
+            console.error("Login Fail: ", err);
+            // Handle login error, e.g., show an alert
+        }
+    }
+
     return (
         <View style={{ padding: 20 }}>
             <TextInput label="Email" value={email} onChangeText={setEmail} />
             <TextInput label="Password" value={password} secureTextEntry onChangeText={setPassword} />
-            {/* <Button mode="contained" onPress={handleLogin}>로그인</Button> */}
+            <Button mode="contained" onPress={handleLogin}>Login</Button>
             <Button onPress={handleSignUp}>Sign Up</Button>
         </View>
     )
