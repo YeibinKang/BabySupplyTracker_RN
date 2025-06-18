@@ -32,6 +32,7 @@ export default function ItemDetailScreen() {
 
         console.log("item id: ", itemData.id);
 
+
         if (itemData && itemData.id) {
             console.log("Edit button pressed");
             navigation.navigate("ItemEdit", { itemId: itemData.id });
@@ -45,17 +46,16 @@ export default function ItemDetailScreen() {
 
         if (itemData !== null) {
 
-            console.log("Delete button pressed");
-
             //delete item from the useInventory context (items)
 
-            const deletedItem = items.find((item) => item.id === itemInfo.itemId);
-            console.log("the item will be deleted: ", deletedItem.name);
-            if (deletedItem) {
+            const deletedItem = items.find((item) => item.id === itemData.id);
+            if (!deletedItem) {
+                console.log("Item not found in the inventory");
+                return;
+            } else {
                 deleteItem(deletedItem.id);
                 navigation.goBack(); // Navigate back to the previous screen after deletion
             }
-
 
         }
 

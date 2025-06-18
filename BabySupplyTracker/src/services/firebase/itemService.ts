@@ -1,8 +1,8 @@
 import { db, auth } from './firebaseConfig';
-import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from 'firebase/firestore';
+import { collection, addDoc, getDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from 'firebase/firestore';
 
 
-const uid = auth.currentUser?.uid;
+//const uid = auth.currentUser?.uid;
 
 //addItem
 export const addItem = async (item) => {
@@ -20,7 +20,12 @@ export const addItem = async (item) => {
 
 //getItems
 export const getItems = async (uid:string) => {
-    const q = query(collection(db, 'items'), where('uid', '==', uid));
+    const user = auth.currentUser;
+    if(!user){
+        throw new Error("User is not authenticated");       
+    }
+
+    const q = query(collection(db, 'items'), where('uid', '==', user.uid));
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
         id: doc.id,
@@ -32,11 +37,16 @@ export const getItems = async (uid:string) => {
 
 //updateItem
 export const updateItem = async (itemId, updatedData) => {
-    const itemDocRef = doc(db, 'items', itemId);
-    const itemSnap = await getDocs(itemDocRef);
+    const user = auth.currentUser;
+    console.log("Current user: ", user.uid);
 
-    if(itemSnap.exist() && itemSnap.data().uid === uid){
-        await updateDoc(itemDocRef, updateDoc);
+    
+
+    const itemDocRef = doc(db, 'items', itemId);
+    const itemSnap = await getDoc(itemDocRef);
+
+    if(itemSnap.exists() && itemSnap.data().uid === user.uid){
+        await updateDoc(itemDocRef, updatedData);
     }else{
         throw new Error("No authroization or No item exist");
     }
@@ -46,8 +56,10 @@ export const updateItem = async (itemId, updatedData) => {
 export const deleteItem = async (itemId) => {
     const itemDocRef = doc(db, 'items', itemId);
     const itemSnap = await getDoc(itemDocRef);
+    const user = auth.currentUser;
 
-    if(itemSnap.exist() && itemSnap.data().userId === userId){
+
+    if(itemSnap.exists() && itemSnap.data().uid === user?.uid){
         await deleteDoc(itemDocRef);
     }else{
         throw new Error("No authorization OR No item exist");

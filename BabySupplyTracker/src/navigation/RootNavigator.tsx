@@ -5,6 +5,8 @@ import MainTabNavigator from "./MainTabNavigator";
 import ItemDetailScreen from "../screens/Inventory/ItemDetailScreen";
 import ItemEditScreen from "../screens/Inventory/ItemEditScreen";
 import ItemAddScreen from "../screens/Inventory/ItemAddScreen";
+import SignUpScreen from "../screens/SignUpScreen";
+import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +35,16 @@ export default function RootNavigator() {
                 options={{ title: "Add Item" }}>
 
             </Stack.Screen>
+            <Stack.Screen
+                name="SignUp"
+                component={SignUpScreen}
+                options={{ title: "Sign Up" }}
+            />
+            <Stack.Screen
+                name="LogIn"
+                component={LoginScreen}
+                options={{ title: "Log In" }}
+            />
 
         </Stack.Navigator>
     );

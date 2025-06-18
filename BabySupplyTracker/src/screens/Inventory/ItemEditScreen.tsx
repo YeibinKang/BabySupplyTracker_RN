@@ -55,10 +55,16 @@ export default function ItemEditScreen() {
         }));
     };
 
-    const handleSaveButtonPress = () => {
-        console.log('updated id: ', itemData.id);
-        updateItem(itemData);
-        navigation.navigate("MainTabs", { screen: "InventoryList" });
+    const handleSaveButtonPress = async () => {
+        try {
+            console.log('updated id: ', itemData.id);
+            await updateItem(itemData);
+            navigation.navigate("MainTabs", { screen: "InventoryList" });
+        } catch (error) {
+            console.error("Error updating item: ", error);
+            // Handle error, e.g., show an alert
+        }
+
     };
 
     const handleCancelButtonPress = () => {
@@ -207,7 +213,7 @@ export default function ItemEditScreen() {
                     >
                         <Picker.Item label="Select Unit" value="" />
                         {unitList.map((unit) => (
-                            <Picker.Item label={unit.name} value={unit.name} key={unit.id} />
+                            <Picker.Item label={unit.label} value={unit.label} key={unit.id} />
                         ))}
                     </Picker>
                 </View>

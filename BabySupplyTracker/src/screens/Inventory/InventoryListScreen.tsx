@@ -13,7 +13,6 @@ import { useAuth } from "../../context/AuthContext";
 
 
 
-
 export default function InventoryListScreen() {
 
     //const { items } = useInventory();
@@ -21,7 +20,7 @@ export default function InventoryListScreen() {
 
 
     const { items, addItem, updateItem, deleteItem, categoryList, uid } = useInventory();
-
+    const user = useAuth().user?.email || 'Guest'; // Get the user's display name or default to 'Guest'
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const route = useRoute();
@@ -93,6 +92,11 @@ export default function InventoryListScreen() {
 
     return (
         <View style={{ flex: 1, position: 'relative' }}>
+
+            <View>
+                {user === 'Guest' ? (<Text style={{ paddingTop: 10, paddingLeft: 10, fontSize: 20, color: 'gray' }}>You're currently using guest mode.{'\n'}Log in to access more features!</Text>) : <Text style={{ paddingTop: 10, paddingLeft: 10, fontSize: 20, color: 'gray' }}>Current account: {user}</Text>}
+
+            </View>
 
             <View style={styles.buttonGroup}>
                 {/* category */}
