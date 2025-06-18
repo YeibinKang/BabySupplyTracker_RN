@@ -1,23 +1,16 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
-import { login, signUp } from '../services/firebase/authService';
+import { login } from '../services/firebase/authService';
+import { useRoute, useNavigation } from "@react-navigation/native";
+
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const route = useRoute();
+    const navigation = useNavigation();
 
-
-    //TODO: onAuthStateChanged: 현재 로그인/아닌지..
-
-    const handleSignUp = async () => {
-        try {
-            await signUp(email, password);
-
-        } catch (err) {
-            console.error("Signup Fail: ", err);
-        }
-    }
 
     const handleLogin = async () => {
         try {
@@ -29,13 +22,16 @@ export default function LoginScreen() {
         }
     }
 
+
+
     return (
         <View style={{ padding: 20 }}>
             <TextInput label="Email" value={email} onChangeText={setEmail} />
             <TextInput label="Password" value={password} secureTextEntry onChangeText={setPassword} />
             <Button mode="contained" onPress={handleLogin}>Login</Button>
-            <Button onPress={handleSignUp}>Sign Up</Button>
-        </View>
+            <Text style={{ marginTop: 20, textAlign: 'center' }}>Don't have an account? <Text style={{ color: 'red' }} onPress={() => navigation.navigate("SignUp")}>Sign Up</Text></Text>
+            <Text style={{ textAlign: 'center' }}>You can share the inventory with your family!</Text>
+        </View >
     )
 
 }
