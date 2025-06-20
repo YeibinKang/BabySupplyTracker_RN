@@ -23,7 +23,7 @@ const snapshot = await getDocs(collection(db, 'units'));
   if (snapshot.empty) {
     const unitCollection = collection(db, 'units');
     for (const unit of units) {
-      await addDoc(unitCollection, { name: unit });
+      await addDoc(unitCollection, unit);
     }
     console.log("Initial Unit data saved!");
   } else {

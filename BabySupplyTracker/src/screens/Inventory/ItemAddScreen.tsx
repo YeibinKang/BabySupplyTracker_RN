@@ -86,6 +86,10 @@ export default function ItemAddScreen() {
 
     };
 
+    useEffect(() => {
+        console.log("unit list: ", unitList);
+    }, [unitList]);
+
 
 
     return (
@@ -221,16 +225,18 @@ export default function ItemAddScreen() {
                 </Text>
             </TouchableOpacity>
 
+
             {showAdvanced && (
                 <>
 
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Unit</Text>
                         <View style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, marginTop: 4 }}>
-                            {Array.isArray(unitList) && (
+                            {(unitList) && (
                                 <Picker style={styles.picker}
                                     selectedValue={itemData.unit}
                                     onValueChange={(value) => handleTextInputChange('unit', value)}
+                                    mode='dropdown'
                                 >
                                     <Picker.Item label="Select Unit" value="" />
                                     {unitList.map((unitObj) => (
