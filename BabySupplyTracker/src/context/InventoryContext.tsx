@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { InventoryItem } from '../navigation/types';
-import { Category } from "../navigation/types";
+import { Category, Unit } from "../navigation/types";
 
 const InventoryContext = createContext<InventoryContextType>({
     items: [],
@@ -17,7 +17,7 @@ type InventoryContextType = {
     updateItem: (item: InventoryItem) => void;
     deleteItem: (id: string) => void;
     categoryList: Category[];
-    unitList: string[];
+    unitList: Unit[];
     uid: string | null;
 };
 
