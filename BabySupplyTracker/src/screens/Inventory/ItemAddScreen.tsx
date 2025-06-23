@@ -86,9 +86,6 @@ export default function ItemAddScreen() {
 
     };
 
-    useEffect(() => {
-        console.log("unit list: ", unitList);
-    }, [unitList]);
 
 
 
@@ -97,7 +94,7 @@ export default function ItemAddScreen() {
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Name</Text>
                 <TextInput
-                    value={itemData.name}
+                    value={itemData.name?.toString() ?? ''}
                     onChangeText={(value) => handleTextInputChange('name', value)}
                     mode="outlined"
                     style={styles.sectionContent}
@@ -115,7 +112,7 @@ export default function ItemAddScreen() {
                         <Text style={{ fontSize: 20 }}>-</Text>
                     </TouchableOpacity>
 
-                    <Text style={{ marginHorizontal: 16, fontSize: 16 }}>{itemData.qty}</Text>
+                    <Text style={{ marginHorizontal: 16, fontSize: 16 }}> {isNaN(itemData.qty) ? 0 : itemData.qty}</Text>
 
                     <TouchableOpacity
                         onPress={() => handleTextInputChange('qty', itemData.qty + 1)}
@@ -136,7 +133,7 @@ export default function ItemAddScreen() {
                         <Text style={{ fontSize: 20 }}>-</Text>
                     </TouchableOpacity>
 
-                    <Text style={{ marginHorizontal: 16, fontSize: 16 }}>{itemData.minStock}</Text>
+                    <Text style={{ marginHorizontal: 16, fontSize: 16 }}> {isNaN(itemData.qty) ? 0 : itemData.minStock}</Text>
 
                     <TouchableOpacity
                         onPress={() => handleTextInputChange('minStock', itemData.minStock + 1)}
@@ -272,7 +269,7 @@ export default function ItemAddScreen() {
                             />
                         </View>
                         <TextInput
-                            value={itemData.stage}
+                            value={itemData.stage?.toString() ?? ''}
                             onChangeText={(value) => handleTextInputChange('stage', value)}
                             mode="outlined"
                             style={styles.sectionContent}
@@ -285,7 +282,7 @@ export default function ItemAddScreen() {
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Item Location</Text>
                         <TextInput
-                            value={itemData.itemLocation}
+                            value={itemData.itemLocation?.toString() ?? ''}
                             onChangeText={(value) => handleTextInputChange('itemLocation', value)}
                             mode="outlined"
                             style={styles.sectionContent}
@@ -298,7 +295,7 @@ export default function ItemAddScreen() {
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Memo</Text>
                         <TextInput
-                            value={itemData.memo}
+                            value={itemData.memo?.toString() ?? ''}
                             onChangeText={(value) => handleTextInputChange('memo', value)}
                             mode="outlined"
                             multiline={true}

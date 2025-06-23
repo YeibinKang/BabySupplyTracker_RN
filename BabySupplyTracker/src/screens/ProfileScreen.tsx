@@ -1,13 +1,10 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { Card, Text, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { signOut } from "firebase/auth";
 
-
-
 export default function ProfileScreen() {
-
     const { user } = useAuth();
     const navigation = useNavigation();
 
@@ -20,99 +17,73 @@ export default function ProfileScreen() {
             .catch((error) => {
                 console.error("Error signing out: ", error);
             });
-
-    }
+    };
 
     return (
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ flex: 1 }}
+        >
+            <ScrollView contentContainerStyle={styles.container}>
+                <View style={styles.card}>
+                    <Text style={styles.title}>My Profile</Text>
+                    <Text style={styles.label}>Email</Text>
+                    <Text style={styles.text}>{user.email}</Text>
+                    <Text style={styles.label}>Display Name</Text>
+                    <Text style={styles.text}>{user.displayName || 'N/A'}</Text>
 
-
-
-
-
-        // user information - name, email
-        <View >
-
-            <Card style={styles.card}>
-                <View style={styles.cardContent}>
-
-                    <View style={styles.textContent}>
-                        <Text>User Email: {user.email}</Text>
-                        <Text>User Name: {user.displayName}</Text>
-
-                    </View>
-
+                    <Button
+                        mode="contained"
+                        style={styles.button}
+                        buttonColor="#DA6C6C"
+                        onPress={handleLogOutPressed}
+                    >
+                        Log Out
+                    </Button>
                 </View>
-
-            </Card>
-
-
-            <View style={styles.buttonContainer}>
-
-                <Button mode="contained" buttonColor="red" style={styles.button} onPress={handleLogOutPressed}>
-                    Logout
-                </Button>
-            </View>
-
-        </View>
-
-
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
 
 const styles = StyleSheet.create({
-
-    card: {
-        marginHorizontal: 16,
-        marginVertical: 8,
-        borderRadius: 12,
-        padding: 12,
-        backgroundColor: '#FDFAF6',
+    container: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        paddingHorizontal: 24,
+        backgroundColor: '#f7f7f7',
     },
-    cardContent: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-
+    card: {
+        backgroundColor: '#ffffff',
+        borderRadius: 16,
+        padding: 24,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 4,
     },
     title: {
+        fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 4,
+        marginBottom: 20,
+        textAlign: 'center',
+        color: '#333',
     },
-
-
-    textContent: {
-        flex: 1,
+    label: {
+        fontSize: 14,
+        color: '#888',
+        marginTop: 8,
     },
-    cardTitle: {
-        fontWeight: 'bold',
-        marginBottom: 4,
+    text: {
         fontSize: 16,
-    },
-    floatingButton: {
-        position: 'absolute',
-        right: 20,
-        bottom: 50,
-        backgroundColor: '#DA6C6C',
-        borderRadius: 30,
-        padding: 16,
-        elevation: 5, // 안드로이드 그림자
-        shadowColor: '#000', // iOS 그림자
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.5,
-        zIndex: 1000
-    },
-
-
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        marginBottom: 8,
+        color: '#000',
     },
     button: {
-        flex: 1,
-        marginHorizontal: 10,
+        marginTop: 24,
+        paddingVertical: 8,
+        borderRadius: 8,
     },
-
-
 });

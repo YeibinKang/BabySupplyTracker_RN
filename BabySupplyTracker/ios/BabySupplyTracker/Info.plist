@@ -28,7 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>babysupplytracker</string>
-          <string>com.anonymous.BabySupplyTracker</string>
+          <string>com.yeibinkang.BabySupplyTracker</string>
         </array>
       </dict>
     </array>
