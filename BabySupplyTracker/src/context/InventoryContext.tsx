@@ -19,6 +19,7 @@ type InventoryContextType = {
     categoryList: Category[];
     unitList: Unit[];
     uid: string | null;
+    itemsError?: Error | null;
 };
 
 

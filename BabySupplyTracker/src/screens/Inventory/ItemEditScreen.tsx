@@ -56,6 +56,12 @@ export default function ItemEditScreen() {
     };
 
     const handleSaveButtonPress = async () => {
+        /// Check if the item name is empty
+        if (!itemData.name.trim()) {
+            alert("Please enter an item name.");
+            return;
+        }
+
         try {
             console.log('updated id: ', itemData.id);
             await updateItem(itemData);
