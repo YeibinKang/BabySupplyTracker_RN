@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, Linking } from "react-native";
+import { View, StyleSheet, ScrollView, Linking, Alert } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Text, Button, Divider } from "react-native-paper";
 import { useInventory } from '../../context/InventoryContext';
@@ -53,6 +53,7 @@ export default function ItemDetailScreen() {
                 console.log("Item not found in the inventory");
                 return;
             } else {
+
                 deleteItem(deletedItem.id);
                 navigation.goBack(); // Navigate back to the previous screen after deletion
             }
@@ -60,6 +61,25 @@ export default function ItemDetailScreen() {
         }
 
     }
+
+    const confirmDelete = () => {
+        Alert.alert(
+            "Confirm Delete",
+            "Are you sure you want to delete this item?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: handleDeleteButtonPress
+                }
+            ]
+        );
+    };
+
 
     const checkIsExpiringSoon = (dateStr: string) => {
         const today = new Date();
@@ -136,7 +156,7 @@ export default function ItemDetailScreen() {
 
             <View style={styles.buttonContainer}>
                 <Button mode="outlined" style={styles.button} onPress={handleEditButtonPress}>Edit</Button>
-                <Button mode="contained" buttonColor="red" style={styles.button} onPress={handleDeleteButtonPress}>Delete</Button>
+                <Button mode="contained" buttonColor="red" style={styles.button} onPress={confirmDelete}>Delete</Button>
             </View>
 
 

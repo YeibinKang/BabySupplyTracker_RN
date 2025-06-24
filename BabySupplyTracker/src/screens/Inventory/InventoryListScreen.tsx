@@ -1,11 +1,11 @@
 
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native"
+import { View, StyleSheet, FlatList, TouchableOpacity, Alert } from "react-native"
 import { Card, Text, Menu, Button } from "react-native-paper";
 import { useNavigation, NavigationProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { useInventory } from "../../context/InventoryContext";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useId, useState } from "react";
+import { useId, useState, useEffect } from "react";
 import { checkIsExpiringSoon } from "../../utils/expiringFilter";
 import { shouldIncludeItem } from "../../utils/ShouldIncludeItem";
 import { getCardStyleByStatus, getWarningIcon, getIconColor } from "../../utils/itemStyleHelper";
@@ -19,7 +19,7 @@ export default function InventoryListScreen() {
     //const { categoryList } = useInventory();
 
 
-    const { items, addItem, updateItem, deleteItem, categoryList, uid } = useInventory();
+    const { items, addItem, updateItem, deleteItem, categoryList, uid, itemsError } = useInventory();
     const user = useAuth().user?.email || 'Guest'; // Get the user's display name or default to 'Guest'
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -88,13 +88,21 @@ export default function InventoryListScreen() {
     );
 
 
+    useEffect(() => {
+        if (itemsError) {
+            Alert.alert(
+                "Failed to Load Data",
+                "Error occured while loading items. Please try again later.",
+            );
+        }
+    }, [itemsError]);
 
 
     return (
         <View style={{ flex: 1, position: 'relative' }}>
 
             <View>
-                {user === 'Guest' ? (<Text style={{ paddingTop: 10, paddingLeft: 10, fontSize: 20, color: 'gray' }}>You're currently using guest mode.{'\n'}Log in to access more features!</Text>) : <Text style={{ paddingTop: 10, paddingLeft: 10, fontSize: 20, color: 'gray' }}>Current account: {user}</Text>}
+                {user === 'Guest' ? (<Text style={{ paddingTop: 10, paddingLeft: 10, fontSize: 20, color: 'gray' }}>You're currently using guest mode.{'\n'}Log in to share your inventory with family!</Text>) : <Text style={{ paddingTop: 10, paddingLeft: 10, fontSize: 20, color: 'gray' }}>Current account: {user}</Text>}
 
             </View>
 

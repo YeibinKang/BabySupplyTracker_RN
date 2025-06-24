@@ -8,6 +8,7 @@ export const InventoryProviderFirebase = ({ children, uid }) => {
     const [items, setItems] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [unitList, setUnitList] = useState([]);
+    const [itemsError, setItemsError] = useState(null);
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -36,8 +37,11 @@ export const InventoryProviderFirebase = ({ children, uid }) => {
                 setCategoryList(fetchedCategories);
 
                 setUnitList(fetchedUnits);
+
+                setItemsError(null); // Reset error state on successful fetch
             } catch (err) {
                 console.error("Error while initial Data loading: ", err);
+                setItemsError(err);
             }
 
 
@@ -73,6 +77,7 @@ export const InventoryProviderFirebase = ({ children, uid }) => {
         <InventoryContext.Provider
             value={{
                 items,
+                itemsError,
                 categoryList,
                 unitList,
                 addItem,
