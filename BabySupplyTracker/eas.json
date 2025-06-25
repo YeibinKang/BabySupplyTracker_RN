@@ -14,7 +14,7 @@
     "production": {
       "autoIncrement": true,
       "env": {
-        "EAS_BUILD_INSTALL_COMMAND": "npm install"
+        "EXPO_EAS_BUILD_PRE_INSTALL_SCRIPT": "./eas-build-pre-install.sh"
       }
     }
   },
