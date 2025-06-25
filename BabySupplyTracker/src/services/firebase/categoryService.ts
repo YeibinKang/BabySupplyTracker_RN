@@ -1,38 +1,44 @@
 import { db } from "./firebaseConfig";
-import {collection, addDoc, getDocs} from "firebase/firestore";
+import {collection, addDoc, getDocs, query, orderBy} from "firebase/firestore";
 
  const categories = [
-        { label: "Hygiene Product", value: "Hygiene Product", icon: "human-baby-changing-table" },
-    { label: "Feeding Product", value: "Feeding Product", icon: "food-apple" },
-    { label: "Clothing", value: "Clothing", icon: "tshirt-crew" },
-    { label: "Shower Product", value: "Shower Product", icon: "bathtub" },
-    { label: "Baby Gear", value: "Baby Gear", icon: "baby-carriage" },
-    { label: "Toys", value: "Toys", icon: "dice-5" },
-    { label: "Medicine Product", value: "Medicine Product", icon: "pill" },
-    { label: "Sleeping Product", value: "Sleeping Product", icon: "bed" },
+     { label: "Hygiene Product", value: "Hygiene Product", icon: "human-baby-changing-table", order: 1 },
+        { label: "Feeding Product", value: "Feeding Product", icon: "food-apple", order: 2 },
+        { label: "Clothing", value: "Clothing", icon: "tshirt-crew", order: 3 },
+        { label: "Shower Product", value: "Shower Product", icon: "bathtub", order: 4 },
+        { label: "Baby Gear", value: "Baby Gear", icon: "baby-carriage", order: 5 },
+        { label: "Toys", value: "Toys", icon: "dice-5", order: 6 },
+        { label: "Medicine Product", value: "Medicine Product", icon: "pill", order: 7 },
+        { label: "Sleeping Product", value: "Sleeping Product", icon: "bed", order: 8 },
+        { label: "Other", value: "Other", icon: "dots-horizontal-circle-outline", order: 99 },
     ];
 
 
 export const seedCategoriesIfEmpty = async () => {
-
     const snapshot = await getDocs(collection(db, 'categories'));
-    if(snapshot.empty){
-        const categoryCollection = collection(db, 'categories');
+    const existingCategories = snapshot.docs.map(doc => doc.data().value); 
+    const categoryCollection = collection(db, 'categories');
 
-    for(const category of categories){
-        await addDoc(categoryCollection, category);
+    let addedCount = 0;
+
+    for (const category of categories) {
+        if (!existingCategories.includes(category.value)) {
+            await addDoc(categoryCollection, category);
+            addedCount++;
+        }
     }
 
-    console.log("Success to create a categories collection");
-    }else{
-        console.log("Category data is already exist");
+    if (addedCount > 0) {
+        console.log(`${addedCount} new categories added`);
+    } else {
+        console.log("All categories already exist");
     }
-   
-    
 };
 
 export const getCategories = async () => {
-    const snapshot = await getDocs(collection(db, 'categories'));
+    const categoryRef = collection(db, 'categories');
+    const q = query(categoryRef, orderBy('order'));
+    const snapshot = await getDocs(q);
     return snapshot.docs.map(doc=>({
         id: doc.id,
         ...doc.data(),

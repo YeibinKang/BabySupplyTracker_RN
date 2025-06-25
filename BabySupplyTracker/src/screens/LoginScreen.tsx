@@ -55,6 +55,7 @@ export default function LoginScreen() {
                         mode="contained"
                         style={loginStyles.button}
                         onPress={handleLogin}
+                        buttonColor="#DA6C6C"
                     >
                         Login
                     </Button>
@@ -87,7 +88,7 @@ export default function LoginScreen() {
                     </Text>
                 </View>
             </ScrollView>
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView >
     );
 }
 

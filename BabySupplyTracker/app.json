@@ -39,6 +39,11 @@
     "experiments": {
       "typedRoutes": true
     },
-    "jsEngine": "hermes"
+    "jsEngine": "hermes",
+    "extra": {
+      "eas": {
+        "projectId": "cbe5f6aa-6833-4c64-b4b3-7a5f16d8c720"
+      }
+    }
   }
 }

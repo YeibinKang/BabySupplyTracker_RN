@@ -288,7 +288,7 @@ export default function ItemEditScreen() {
                 <Button mode="outlined" style={styles.button} onPress={handleSaveButtonPress}>
                     Save
                 </Button>
-                <Button mode="contained" buttonColor="purple" style={styles.button} onPress={handleCancelButtonPress}>
+                <Button mode="contained" buttonColor="#DA6C6C" style={styles.button} onPress={handleCancelButtonPress}>
                     Cancel
                 </Button>
             </View>

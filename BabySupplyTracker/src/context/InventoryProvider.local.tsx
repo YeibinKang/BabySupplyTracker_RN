@@ -14,6 +14,7 @@ export const InventoryProviderLocal = ({ children }: { children: React.ReactNode
         label: string;
         value: string;
         icon: string;
+        order: number;
     }
 
     type Unit = {
@@ -23,14 +24,15 @@ export const InventoryProviderLocal = ({ children }: { children: React.ReactNode
     }
 
     const [categoryList, setCategoryList] = useState<Category[]>([
-        { label: "Hygiene Product", value: "Hygiene Product", icon: "human-baby-changing-table" },
-        { label: "Feeding Product", value: "Feeding Product", icon: "food-apple" },
-        { label: "Clothing", value: "Clothing", icon: "tshirt-crew" },
-        { label: "Shower Product", value: "Shower Product", icon: "bathtub" },
-        { label: "Baby Gear", value: "Baby Gear", icon: "baby-carriage" },
-        { label: "Toys", value: "Toys", icon: "dice-5" },
-        { label: "Medicine Product", value: "Medicine Product", icon: "pill" },
-        { label: "Sleeping Product", value: "Sleeping Product", icon: "bed" },
+        { label: "Hygiene Product", value: "Hygiene Product", icon: "human-baby-changing-table", order: 1 },
+        { label: "Feeding Product", value: "Feeding Product", icon: "food-apple", order: 2 },
+        { label: "Clothing", value: "Clothing", icon: "tshirt-crew", order: 3 },
+        { label: "Shower Product", value: "Shower Product", icon: "bathtub", order: 4 },
+        { label: "Baby Gear", value: "Baby Gear", icon: "baby-carriage", order: 5 },
+        { label: "Toys", value: "Toys", icon: "dice-5", order: 6 },
+        { label: "Medicine Product", value: "Medicine Product", icon: "pill", order: 7 },
+        { label: "Sleeping Product", value: "Sleeping Product", icon: "bed", order: 8 },
+        { label: "Other", value: "Other", icon: "dots-horizontal-circle-outline", order: 99 },
     ]);
 
     const [unitList, setUnitList] = useState<Unit[]>([

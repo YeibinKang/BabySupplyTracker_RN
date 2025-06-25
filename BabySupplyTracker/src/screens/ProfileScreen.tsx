@@ -29,7 +29,7 @@ export default function ProfileScreen() {
                     <Text style={styles.title}>My Profile</Text>
                     <Text style={styles.label}>Email</Text>
                     <Text style={styles.text}>{user.email}</Text>
-                    <Text style={styles.label}>Display Name</Text>
+                    <Text style={styles.label}>User Name</Text>
                     <Text style={styles.text}>{user.displayName || 'N/A'}</Text>
 
                     <Button
