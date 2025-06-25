@@ -1,8 +1,7 @@
 {
   "cli": {
     "version": ">= 16.13.0",
-    "appVersionSource": "remote",
-    "workingDirectory": "./BabySupplyTracker"
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
