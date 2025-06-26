@@ -40,7 +40,10 @@ You can find more detailed information in the link below.
 | Other    | Expo, Firebase Auth (optional) |
 
 ## Screenshots
- <img src="https://github.com/user-attachments/assets/2f5ef4a4-8fde-4bf0-890c-7de8581fb580" style="width: 25%; height: auto;">
+
+| Inventory List - Login Mode | Add Item | Filtering | Item detail | Inventory List - Guest Mode |
+|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
+| <img src="https://github.com/user-attachments/assets/90e7d2ab-95a9-4017-b17a-1a2833b7382d" width="250"> |<img src="https://github.com/user-attachments/assets/a42ca5ed-f13d-4ba8-b30c-16f4e0260e3c" width="275"> |<img src="https://github.com/user-attachments/assets/0e1e4c5e-cb59-40dc-8f5c-4081a043ea69" width="250"> | <img src="https://github.com/user-attachments/assets/9df118db-bc4a-4369-821a-b3806995535c" width="275"> | <img src="https://github.com/user-attachments/assets/27afb98c-76e6-4003-ac82-1f5e8697151d" width="250">|
 
 
 ## 🚀 Getting Started
