@@ -9,8 +9,16 @@ As a parent who knows firsthand the chaos of keeping track of baby supplies, I'm
 A new parent, a seasoned pro, or somewhere in between!
 
 ## Result of user survey
-> Between March 24 and April 2, 2025, I conducted a survey involving 44 caregivers from Canada and South Korea to better understand their needs and behaviors.
-You can find more detailed information in the link below.
+Between March 24 and April 2, 2025, I conducted a survey involving 44 caregivers in Canada and South Korea to better understand their needs and behaviors.
+
+Key findings include:
+- 52% of caregivers shop for baby supplies at least once a week.
+- 75% either don’t track supplies or rely on memory.
+- **Importantly, 75% of respondents said they would likely use the app once it becomes available.**
+
+You can find more detailed information and product overview pdf file in the link below.
+[Slide Deck (PDF)](./BabySupplyTracker-ProductOverview.pdf)
+
 
 ## Main features
 * Basic inventory management (View, Add, Update, Delete items)
@@ -21,8 +29,6 @@ You can find more detailed information in the link below.
 * Connection with Google Shopping Link for low stock items
 
 ## Product Design Insights
-
-[Full Product Insights](https://childlike-cyclamen-71c.notion.site/Insight-Lessons-20ec84bc55bb805db3cbcee69a096145?source=copy_link)
 - **Minimal Input Flow**: Reduced required fields to accommodate busy parents.
 - **Guest Mode**: Survey data showed many parents don’t need sharing — login is optional.
 - **Optional Details**: Users can choose to input more details via toggles.
