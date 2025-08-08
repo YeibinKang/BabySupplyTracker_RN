@@ -8,6 +8,7 @@ import RootNavigator from "./navigation/RootNavigator";
 import { PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./context/AuthContext";
 import InventoryProviderSelector from "./context/InventoryProviderSelector";
+import { ShoppingListProvider } from "./context/ShoppingListContext";
 
 
 export default function App() {
@@ -23,9 +24,11 @@ export default function App() {
             {/* <InventoryProvider> */}
             <AuthProvider>
                 <InventoryProviderSelector>
-                    <NavigationContainer>
-                        <RootNavigator />
-                    </NavigationContainer>
+                    <ShoppingListProvider>
+                        <NavigationContainer>
+                            <RootNavigator />
+                        </NavigationContainer>
+                    </ShoppingListProvider>
                 </InventoryProviderSelector>
 
             </AuthProvider>

@@ -2,6 +2,9 @@ import React, { createContext, useContext } from 'react';
 import { InventoryItem } from '../navigation/types';
 import { Category, Unit } from "../navigation/types";
 
+//Purpose: To share inventory items and functions across the app
+
+
 const InventoryContext = createContext<InventoryContextType>({
     items: [],
     addItem: () => { },

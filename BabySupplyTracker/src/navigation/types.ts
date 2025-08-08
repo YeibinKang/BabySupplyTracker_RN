@@ -1,24 +1,10 @@
 // navigation/types.ts
 export type RootStackParamList = {
+  //For React Navigation
+
     MainTabs: undefined;
     ItemDetail: {
-      item: {
-        id: string;
-        name: string;
-        stage: string | null;
-        qty: number;
-        minStock: number;
-        unit: string;
-        category: string;
-        expiredDate: Date | null;
-        needsRestock: boolean;
-        createdAt: Date;
-        itemLocation: string;
-        memo: string;
-        hasExpiredDate: boolean;
-        hasStage: boolean;
-
-      };
+      item: InventoryItem;
       updateItem: (updatedItem: any) => void;
       addItem: (newItem: any) => void;
       deleteItem: (id: string) => void;
@@ -51,5 +37,15 @@ export type RootStackParamList = {
     memo: string;
     hasExpiredDate: boolean;
     hasStage: boolean;
+  }
+
+  export interface ShoppingListItem{
+    id: string;
+    name: string;
+    qty: number;
+    inventoryId?: string;
+    isPurchased: boolean;
+    createdAt: Date;
+    memo?: string;
   }
   
